@@ -15,13 +15,14 @@ function Table() {
     async function fetchData() {
       try {
         const [transactionsResponse, customersResponse] = await Promise.all([
-          axios.get("http://localhost:3002/transactions"),
-          axios.get("http://localhost:3002/customers"),
+          axios.get("https://yahya-zakariaa.github.io/customer-transaction-json/transactions.json"),
+          axios.get("https://yahya-zakariaa.github.io/customer-transaction-json/customers.json"),
         ]);
 
-        const customers = customersResponse.data;
-        const transactions = transactionsResponse.data;
-
+        console.log(transactionsResponse.data);
+        const customers = customersResponse.data.customers;
+        const transactions = transactionsResponse.data.transactions;
+        
         const allCustomersData = customers.map((customer) => ({
           ...customer,
           Transactions: transactions.filter(
