@@ -3,9 +3,33 @@
   width: 100%;
 }
 
+#main-section {
+  min-height: 100vh;
+  max-height: auto;
+  overflow: hidden;
+}
+tr > td{
+  vertical-align: middle !important;
+  padding: 8px !important;
+}
 @media screen and (max-width: 450px) {
   #main-section {
     height: 100% !important;
     overflow: auto !important;
   }
+  *{
+   font-size: 96% !important;
+  }
+}
+@media screen and (max-width: 350px) {
+
+  *{
+   font-size: 94% !important;
+  }
+}
+
+@media screen and (max-width: 769px) {
+ *{
+  font-size: 98% !important;
+ }
 }

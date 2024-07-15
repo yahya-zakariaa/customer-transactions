@@ -11,11 +11,11 @@ function TableRow(props) {
       <td>{props.date}</td>
       <td>
         <button
-          className="btn btn-info"
+          className="btn btn-primary"
           btnid={props.btnId}
           onClick={props.fun}
         >
-          view chart
+           chart
         </button>
       </td>
     </tr>

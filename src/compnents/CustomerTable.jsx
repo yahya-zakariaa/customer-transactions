@@ -8,21 +8,23 @@ function Table() {
   const [customersTransactions, setCustomersTransactions] = useState([]);
   const [filteredTransactions, setFilteredTransactions] = useState([]);
   const [userChartData, setUserChartData] = useState(null);
-  const [showModal, setShowModal] = useState(false);
   const [showAllTransactions, setShowAllTransactions] = useState(false);
 
   useEffect(() => {
     async function fetchData() {
       try {
         const [transactionsResponse, customersResponse] = await Promise.all([
-          axios.get("https://yahya-zakariaa.github.io/customer-transaction-json/transactions.json"),
-          axios.get("https://yahya-zakariaa.github.io/customer-transaction-json/customers.json"),
+          axios.get(
+            "https://yahya-zakariaa.github.io/customer-transaction-json/transactions.json"
+          ),
+          axios.get(
+            "https://yahya-zakariaa.github.io/customer-transaction-json/customers.json"
+          ),
         ]);
 
-        console.log(transactionsResponse.data);
         const customers = customersResponse.data.customers;
         const transactions = transactionsResponse.data.transactions;
-        
+
         const allCustomersData = customers.map((customer) => ({
           ...customer,
           Transactions: transactions.filter(
@@ -49,7 +51,6 @@ function Table() {
   };
 
   const handleTransactionSearch = (e) => {
-   
     const value = e.target.value.toLowerCase();
     const filtered = customersTransactions.filter((user) =>
       user.Transactions.some((transaction) =>
@@ -62,58 +63,60 @@ function Table() {
   const clearInputs = () => {
     document.querySelector("#searchByName").value = "";
     document.querySelector("#searchByTransaction").value = "";
-    setShowModal(false);
     setFilteredTransactions(customersTransactions);
   };
-
   const showChart = (user) => {
+    document.querySelector("body").classList.add("overflow-hidden");
+
     const currentUserData = customersTransactions.find((e) => e.id == user.id);
 
     setUserChartData({
-      labels: currentUserData.Transactions.map((transaction) => transaction.date),
+      labels: currentUserData.Transactions.map(
+        (transaction) => transaction.date
+      ),
       datasets: [
         {
           label: currentUserData.name,
-          data: currentUserData.Transactions.map((transaction) => transaction.amount),
+          data: currentUserData.Transactions.map(
+            (transaction) => transaction.amount
+          ),
           fill: false,
-          backgroundColor: "rgba(75, 192, 192, 0.4)",
-          borderColor: "rgba(75, 192, 192, 1)",
+          backgroundColor: `#${Math.floor(Math.random() * 16777215).toString(
+            16
+          )}`,
+          borderColor: `rgba(${Math.floor(Math.random() * 4)}, ${Math.floor(
+            Math.random() * 23
+          )}, ${Math.floor(Math.random() * 192)}, 1)`,
         },
       ],
     });
-    setShowModal(true);
   };
-
   const showAllTransactionsChart = () => {
-    const allTransactions = customersTransactions.flatMap((user) =>
-      user.Transactions.map((transaction) => ({
-        name: user.name,
-        date: transaction.date,
-        amount: transaction.amount,
-      }))
-    );
+    document.querySelector("body").classList.add("overflow-hidden");
+
+    const allCustomersData = customersTransactions.map((user) => ({
+      label: user.name,
+      data: user.Transactions.map((transaction) => transaction.amount),
+      fill: false,
+      backgroundColor: `#${Math.floor(Math.random() * 16777215).toString(16)}`,
+      borderColor: `rgba(${Math.floor(Math.random() * 4)}, ${Math.floor(
+        Math.random() * 23
+      )}, ${Math.floor(Math.random() * 192)}, 1)`,
+    }));
 
     setUserChartData({
-      labels: allTransactions.map((transaction) => transaction.date),
-      datasets: [
-        {
-          label: "All Customers Transactions",
-          data: allTransactions.map((transaction) => transaction.amount),
-          fill: false,
-          backgroundColor: "rgba(75, 192, 192, 0.4)",
-          borderColor: "rgba(75, 192, 192, 1)",
-        },
-      ],
+      labels: ["2022-1-1", "2022-1-2"],
+      datasets: allCustomersData,
     });
-    setShowModal(true);
+
     setShowAllTransactions(true);
   };
 
   return (
-    <section id="main-section" className="table py-5 m-0 bg-dark vh-100 overflow-hidden">
+    <section id="main-section" className="table py-5 m-0 bg-dark ">
       <div className="gradient-custom-2 h-100 d-flex flex-column align-items-center">
         <input
-          className="form-control w-75 shadow"
+          className="form-control w-75 shadow rounded-pill py-2"
           id="searchByName"
           type="text"
           placeholder="Search by name"
@@ -121,16 +124,18 @@ function Table() {
         />
 
         <input
-          className="form-control w-75 mt-3  shadow"
+          className="form-control w-75 mt-4 rounded-pill py-2  shadow"
           id="searchByTransaction"
           type="text"
           placeholder="Search by transaction"
           onKeyUp={handleTransactionSearch}
         />
 
-        <div className="d-flex my-5">
-          <button className="btn btn-primary me-3" onClick={showAllTransactionsChart}>
-            Show All Transactions in Chart
+        <div className="d-flex my-5 px-3">
+          <button
+            className="btn btn-primary btn-primary me-3"
+            onClick={showAllTransactionsChart}>
+            All Transactions in Chart
           </button>
           <button className="btn btn-danger" onClick={clearInputs}>
             Clear Inputs
@@ -138,11 +143,11 @@ function Table() {
         </div>
 
         <div className="mask d-flex align-items-center h-100 w-100">
-          <div className="container d-flex flex-column align-items-center justify-content-center bg-dark">
+          <div className="container d-flex flex-column align-items-center justify-content-center bg-transparent">
             <div className="row w-100">
-              <div className="col-12">
+              <div className="col-12 p-0 mb-0">
                 <div className="table-responsive">
-                  <table className="table table-dark table-bordered table-hover table-striped mb-0">
+                  <table className="table rounded-5  table-dark table-bordered table-hover table-striped mb-0">
                     <thead className="text-center">
                       <tr>
                         <th scope="col">#</th>
@@ -175,21 +180,26 @@ function Table() {
         </div>
       </div>
 
-
       {userChartData && (
-        <div id="chartContainer" className="bg-dark position-absolute top-50 start-50 translate-middle">
+        <div
+          id="chartContainer"
+          className="bg-dark overflow-hidden position-absolute top-50 start-50 py-4 translate-middle">
           <button
             className="fs-5 position-absolute top-0 end-0 btn text-white fw-bolder m-3"
             onClick={() => {
+              document
+                .querySelector("body")
+                .classList.remove("overflow-hidden");
               setUserChartData(null);
               setShowAllTransactions(false);
-            }}
-          >
+            }}>
             X
           </button>
-          <div className="container d-flex justify-content-center align-items-center flex-column h-100 w-100 p-5">
+          <div className="container   d-flex justify-content-center align-items-center flex-column h-100 w-100 p-5 px-2">
             {showAllTransactions && (
-              <h2 className="text-white bg-transparent mb-5">Showing All Customers Transactions</h2>
+              <h2 className="text-white bg-transparent mb-5">
+                Showing All Customers Transactions
+              </h2>
             )}
             <TransactionChart chartData={userChartData} />
           </div>
