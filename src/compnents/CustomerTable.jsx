@@ -135,7 +135,7 @@ function Table() {
           <button
             className="btn btn-primary btn-primary me-3"
             onClick={showAllTransactionsChart}>
-            All Transactions in Chart
+            All Customers Chart
           </button>
           <button className="btn btn-danger" onClick={clearInputs}>
             Clear Inputs
@@ -154,7 +154,7 @@ function Table() {
                         <th scope="col">Name</th>
                         <th scope="col">Transaction</th>
                         <th scope="col">Date</th>
-                        <th scope="col">Chart</th>
+                        <th scope="col">View Chart</th>
                       </tr>
                     </thead>
                     <tbody className="text-center">
