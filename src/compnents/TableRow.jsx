@@ -15,7 +15,7 @@ function TableRow(props) {
           btnid={props.btnId}
           onClick={props.fun}
         >
-           chart
+           View
         </button>
       </td>
     </tr>
